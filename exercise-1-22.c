@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#define COLUMN 30 // Defines a quantity for text character to be allow in 
+#define COLUMN 30 // Defines a quantity for text character to be allowed in 
 						// one same line.
 
 void fold(char line[], int len, int column);
@@ -20,7 +20,7 @@ int main()
 void fold(char line[], int len, int col) /* Function to fold lines */
 {
 	int i, j;
-	int token; /* Indicates if a blank space or a tab space have been found at
+	int token; /* Indicates if a blank space or a tab space has been found at
 					  the commencement of a new folded line. */
 
 	token = 0; 
