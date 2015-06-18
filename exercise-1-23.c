@@ -19,6 +19,7 @@ int main()
 	tokens = tokend = comi = comf = 0;
 	while((len = getline(line, MAXLINE)) > 0)
 	{
+		i = 0;
 		while(i < len)
 		{
 			if(line[i] == '\'')
