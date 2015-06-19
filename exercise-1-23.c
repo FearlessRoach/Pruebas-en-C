@@ -24,7 +24,8 @@ int main()
 		i = 0;
 		while(i < len)
 		{
-			if(line[i] == '\'' && comi == 0 && tokens == 0)
+			if(line[i] == '\'' && comi == 0 && tokens == 0
+				&& tokend == 0)
 			{
 			/* Prints every single quote string that isn't inside a comment
 			   and marks its start with variable 'tokens'. */
@@ -32,7 +33,8 @@ int main()
 				tokens = 1;
 				i++;
 			}	
-			else if(line[i] == '\"' && comi == 0 && tokend == 0)
+			else if(line[i] == '\"' && comi == 0 && tokend == 0
+						&& tokens == 0)
 			{
 			/* Prints every double quote string that isn't inside a comment
 			   and marks its start with variable 'tokend'. */
@@ -40,13 +42,22 @@ int main()
 				tokend = 1;
 				i++;
 			}
-			else if(line[i] == '\'' && tokens && comi == 0)
+			else if(line[i] == '\'' && (tokens || tokend) && comi == 0)
 			{
 			/* Marks the end of a single quoted string with variable tokens. */
 				if(line[i-1] == '\\')
 				{
-					printf("%c", line[i]);
-					i++;
+					if(line[i-2] == '\\')
+					{
+						printf("%c", line[i]);
+						tokens = 0;
+						i++;
+					}
+					else
+					{
+						printf("%c", line[i]);
+						i++;
+					}
 				}
 				else
 				{
@@ -55,13 +66,22 @@ int main()
 					i++;	
 				}
 			}
-			else if(line[i] == '\"' && tokend && comi == 0)
+			else if(line[i] == '\"' && (tokend || tokens) && comi == 0)
 			{
 			/* Marks the end of a double quoted string with variable tokend. */
 				if(line[i-1] == '\\')
 				{
-					printf("%c", line[i]);
-					i++;
+					if(line[i-2] == '\\')
+					{
+						printf("%c", line[i]);
+						tokens = 0;
+						i++;
+					}
+					else
+					{
+						printf("%c", line[i]);
+						i++;
+					}
 				}
 				else
 				{
@@ -81,7 +101,7 @@ int main()
 			{
 			/* This chunk analyzes everything outside single and double quoted
 			   strings i.e. Comments. */
-				if(line[i] == '/' && line[i+1] == '*')
+				if(line[i] == '/' && line[i+1] == '*' && comi == 0)
 				{
 				/* Finds any multi-line comment and indicates it using 'comi'. */
 					comi = 1;
