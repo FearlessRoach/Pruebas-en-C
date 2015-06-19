@@ -1,2 +1,2 @@
 # Pruebas-en-C
-Ejemplos y ejercicios de KyR-Programming in C
+Ejemplos y ejercicios de K&R-Programming in C
