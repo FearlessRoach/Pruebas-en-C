@@ -9,31 +9,92 @@
 #define MAXLINE 1000
 
 int getline(char s[], int lim);
-void copy(char(to[]), char from[]);
+void copy(char to[], char from[]);
 void errpa(char line[], int len);
 
-int main()	
+int main()
 {
-		
+	char text[MAXLINE];
+	errpa(text, MAXLINE);
+	return 0;
 }
 
 void errpa(char line[], int max)
 {
 	int i;
-	int ind; /* Signifies the loop (while) located a '(' or ')' */
+	int err;
+	int lines, len;
+	int auxp, auxb;
+	int ipar, ibrak, ikey;
 	
-	ind = 0;
+	lines = ipar = ikey = ibrak = auxp = auxb = err = 0;
 	while((len = getline(line, max)) > 0)
 	{
+		++lines;
 		for(i = 0; i < len; i++)
 		{
 			if(line[i] == '(')
 			{
-				++ind;
-				
+				auxb = ibrak;
+				ipar++;
 			}
+			else if(line[i] == ')')
+			{
+				if(auxb == ibrak)
+					ipar--;
+				else
+				{
+					printf("Error: Parenthesis misplaced. Line --> %d\n", lines);
+					err++;
+				}
+			}
+			else if(line[i] == '[')
+			{
+				auxp = ipar;
+				ibrak++;
+			}
+			else if(line[i] == ']')
+			{
+				if(auxp == ipar)
+					ibrak--;
+				else
+				{
+					printf("Error: Bracket misplaced. Line --> %d\n", lines);
+					err++;
+				}
+			}
+			else if(line[i] == '{')
+			{
+				if(ipar || ibrak)
+				{
+					printf ("Error: Brace misplaced. Line --> %d\n", lines);
+					err++;
+				}
+				else
+					ikey++;
+			}
+			else if(line[i] == '}')
+				ikey--;
 		}
+		if(ibrak)
+		{	
+			printf("Error. Mismatched brackets in line --> %d\n", lines);
+			err++;
+			ibrak = 0;
+		}
+		if(ipar)
+		{
+			printf("Error. Mismatched parenthesis in line --> %d\n", lines);
+			err++;
+			ipar = 0;
+		}
+	}	
+	if(ikey)
+	{
+		printf("Error. Mismatched keys.\n");
+		err++;
 	}
+	printf("\nSyntactic errors found: %d", err);
 }
 
 int getline(char s[], int lim)
