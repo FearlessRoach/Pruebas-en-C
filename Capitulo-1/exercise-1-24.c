@@ -25,56 +25,87 @@ void errpa(char line[], int max)
 	int err;
 	int lines, len;
 	int auxp, auxb;
+	int tokens, tokend;
 	int ipar, ibrak, ikey;
 	
-	lines = ipar = ikey = ibrak = auxp = auxb = err = 0;
+	lines = ipar = ikey = ibrak = auxp = auxb = 0;
+	tokend = tokens = err = 0;
 	while((len = getline(line, max)) > 0)
 	{
 		++lines;
 		for(i = 0; i < len; i++)
 		{
-			if(line[i] == '(')
+			if(line[i] == '\'' && tokens == 0 && tokend == 0) 
+				tokens = 1;
+			else if(line[i] == '\"' && tokend == 0 && tokens == 0)
+				tokend = 1;
+			else if(line[i] == '\'' && (tokens || tokend))
 			{
-				auxb = ibrak;
-				ipar++;
-			}
-			else if(line[i] == ')')
-			{
-				if(auxb == ibrak)
-					ipar--;
-				else
+			/* Marks the end of a single quoted string with variable tokens. */
+				if(line[i-1] == '\\')
 				{
-					printf("Error: Parenthesis misplaced. Line --> %d\n", lines);
-					err++;
-				}
-			}
-			else if(line[i] == '[')
-			{
-				auxp = ipar;
-				ibrak++;
-			}
-			else if(line[i] == ']')
-			{
-				if(auxp == ipar)
-					ibrak--;
-				else
-				{
-					printf("Error: Bracket misplaced. Line --> %d\n", lines);
-					err++;
-				}
-			}
-			else if(line[i] == '{')
-			{
-				if(ipar || ibrak)
-				{
-					printf ("Error: Brace misplaced. Line --> %d\n", lines);
-					err++;
+					if(line[i-2] == '\\')
+						tokens = 0;
 				}
 				else
-					ikey++;
+					tokens = 0;	
 			}
-			else if(line[i] == '}')
-				ikey--;
+			else if(line[i] == '\"' && (tokend || tokens))
+			{
+			/* Marks the end of a double quoted string with variable tokend. */
+				if(line[i-1] == '\\')
+				{
+					if(line[i-2] == '\\')
+						tokens = 0;
+				}
+				else
+					tokend = 0;			
+			}
+			else 
+			{
+				if(line[i] == '(')
+				{
+					auxb = ibrak;
+					ipar++;
+				}
+				else if(line[i] == ')')
+				{
+					if(auxb == ibrak)
+						ipar--;
+					else
+					{
+						printf("Error: Parenthesis misplaced. Line --> %d\n", lines);
+						err++;
+					}
+				}
+				else if(line[i] == '[')
+				{
+					auxp = ipar;
+					ibrak++;
+				}
+				else if(line[i] == ']')
+				{
+					if(auxp == ipar)
+						ibrak--;
+					else
+					{
+						printf("Error: Bracket misplaced. Line --> %d\n", lines);
+						err++;
+					}
+				}
+				else if(line[i] == '{')
+				{
+					if(ipar || ibrak)
+					{
+						printf ("Error: Brace misplaced. Line --> %d\n", lines);
+						err++;
+					}
+					else
+						ikey++;
+				}
+				else if(line[i] == '}')
+					ikey--;
+			}
 		}
 		if(ibrak)
 		{	
@@ -88,6 +119,13 @@ void errpa(char line[], int max)
 			err++;
 			ipar = 0;
 		}
+		if(tokens || tokend)
+		{
+			printf("Error. Mismatched single or double quote string in line --> %d\n", lines);
+			err++;
+			tokend = tokend = 0;
+		}
+		
 	}	
 	if(ikey)
 	{
