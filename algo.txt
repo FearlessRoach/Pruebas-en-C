@@ -1,3 +1,0 @@
-Nuevo documento
-1. Agregando algo
-2. Agregando otra cosa (segundo commit)
