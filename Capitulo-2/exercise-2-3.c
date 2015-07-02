@@ -20,14 +20,17 @@ int main()
 
 int htoi(char s[])
 {
+	/* Streams any value in HEX representation into integer form */
 	int i, j, len, res;
 
-	res = 0;
+	res = 0; /* Gives the resulting value */
 	len = slen(s);
 	if(s[0] == '0' && (s[1] == 'x' || s[1] == 'X'))
 	{
+		/* If the HEX starts with '0x' or '0X' */
 		for(i = len-1; i > 1; i--)
 		{
+			/* Walkthrough is in 'reverse' mode (last char to first char) */
 			if(s[i] >= '0' && s[i] <= '9')
 				res = res + (s[i] - '0')*pow(16, len-1-i);
 			else if(s[i] >= 'a' && s[i] <= 'f')
@@ -44,6 +47,7 @@ int htoi(char s[])
 	}
 	else
 	{
+		/* Same process but without '0x' or '0X' */
 		for(i = len-1; i >= 0; i--)
 		{
 			if(s[i] >= '0' && s[i] <= '9')
@@ -63,7 +67,7 @@ int htoi(char s[])
 	return res;
 }
 
-int slen(char s[])
+int slen(char s[]) /* slen: returns length of string 's' */
 {
 	int i;
 
