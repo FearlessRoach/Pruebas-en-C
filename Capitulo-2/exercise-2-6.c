@@ -6,9 +6,9 @@ unsigned getbits(unsigned, int, int);
 
 int main()
 {
-	unsigned x = 2, y = 9;
+	unsigned x = 2, y = 2;
 
-	printf("%u", setbits(x, 3, 4, y));
+	printf("%u", setbits(x, 1, 2, y));
 	return 0;
 }
 
@@ -18,9 +18,10 @@ unsigned setbits(unsigned x, int p, int n, unsigned y)
 	 * and adding 'n' bits from the rightmost part of 'y' starting
 	 * at position 'p'.
 	 */
-	unsigned bits;
-	bits = getbits(y, p, n);
-	return ~(~x << n) & ~(~(~0 << n) & ~bits);
+	unsigned bx;
+	 
+	bx = getbits(x, p, n);
+	return ~(~y << n) & ~(~(~0 << n) & ~bx);
 }
 
 /* getbits: get n bits from position p */
