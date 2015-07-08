@@ -23,7 +23,7 @@ void expand(char s1[], char s2[])
 	for (i = 0; i < strlen(s1); i++)
 		if(s1[i] == '-')
 		{
-			if(isdigit(s1[i-1]) && isdigit(s1[i+1])) /* Procesess digits */
+			if(isdigit(s1[i-1]) && isdigit(s1[i+1])) /* Processes digits */
 				for(san = s1[i-1], j = to; san <= s1[i+1]; san++, j++)
 					s2[j] = san;
 			else if(isalpha(s1[i-1]) && isalpha(s1[i+1])) /* For alphabet */
