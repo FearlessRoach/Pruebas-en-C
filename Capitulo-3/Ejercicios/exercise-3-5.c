@@ -2,7 +2,7 @@
 #include <math.h>
 #include <string.h>
 
-void itob(int n, char s[], unsigned short b);
+void itob(int n, char s[], unsigned short base);
 void reverse(char s[]);
 
 int main()
@@ -13,15 +13,15 @@ int main()
 	return 0;
 }
 
+/* Function for base conversion e.g, decimal-hex, decimal-binary, ... */
 void itob(int n, char s[], unsigned short b)
 {
 	int i, j;
 	
-
-	if(b == 16)
+	if(b == 16) /* Hexadecimal */
 		for(i = n, j = 0; i > 0; i /= b, j++)
 			s[j] = ((i % b) >= 10) ? (i % b) + 'A' - 10 : (i % b) + '0'; 
-	else if(b == 10 || b == 8 || b == 2)
+	else if(b == 10 || b == 8 || b == 2) /* Decimal, octal and binary */
 		for(i = n, j = 0; i > 0; i /= b, j++)
 			s[j] = (i % b) + '0'; 	
 	else
