@@ -1,24 +1,43 @@
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 void itob(int n, char s[], unsigned short b);
+void reverse(char s[]);
 
 int main()
 {
-	
+	char s[20] = {'\0'};
+	itob(4096, s, 10);
+	printf("%s", s);
+	return 0;
 }
 
 void itob(int n, char s[], unsigned short b)
 {
-	int i, token, res;
+	int i, j;
+	
 
-	s = {'\0'};
-	switch(b)
+	if(b == 16)
+		for(i = n, j = 0; i > 0; i /= b, j++)
+			s[j] = ((i % b) >= 10) ? (i % b) + 'A' - 10 : (i % b) + '0'; 
+	else if(b == 10 || b == 8 || b == 2)
+		for(i = n, j = 0; i > 0; i /= b, j++)
+			s[j] = (i % b) + '0'; 	
+	else
+		printf("Error. Incorrect value in third parameter.");
+	s[j] = '\0';
+	reverse(s);
+}
+
+void reverse(char s[])
+{
+	int c, i, j;
+
+	for(i = 0, j = strlen(s)-1; i < j; i++, j--)
 	{
-		base = 0;
-		token = n/b;
-		s[0] = (n % b) >= 10 ? '0' : 'A';
-		for(i = token-1; i > 0; i--)
-			s[i] = strcat(pow(b, i))
+		c = s[i];
+		s[i] = s[j];
+		s[j] = c;
 	}
 }
