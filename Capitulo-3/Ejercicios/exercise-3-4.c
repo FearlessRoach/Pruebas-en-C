@@ -9,7 +9,7 @@ int main()
 {
 	char s[100] = {'\0'};
 	int c;
-	c = INT_MIN;
+	c = 39;
 	printf("Como tipo entero\t\t--> %d\n", c);
 	itoa(c, s);
 	printf("Como tipo cadena de caracteres  --> %s", s);	
