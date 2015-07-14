@@ -14,12 +14,10 @@ int main()
 }
 
 /* Pads with blanks to the left depending on the width ('w') asigned */
-void itoa_pad(unsigned int num, char s[], unsigned int w)
+void itoa_pad(unsigned int num, char s[], unsigned int wid)
 {
 	int i, sign;
-	unsigned int wid;
 	
-	wid = w;
 	if((sign = num) < 0)
 		num = -num;
 	i = 0;
