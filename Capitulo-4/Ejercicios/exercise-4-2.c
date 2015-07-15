@@ -29,7 +29,7 @@ double atof2(char s[])
 		i++;
 	for(power = 1.0; isdigit(s[i]); i++, power *= 10)
 		val = 10.0*val + (s[i] - '0');
-	if(s[i] == 'e')
+	if(s[i] == 'e' || s[i] == 'E')
 		i++;
 	signe = (s[i] == '-') ? -1 : 1;
 	if(s[i] == '+' || s[i] == '-')
