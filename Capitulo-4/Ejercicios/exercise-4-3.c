@@ -1,6 +1,3 @@
-/* Calculator using reverse Polish notation (just basic operations) */
-
-/*------Main Section------*/
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
 
@@ -11,13 +8,12 @@ int getop(char []);
 void push(double);
 double pop(void);
 
-/* Reverse Polish calculator */
 main()
 {
 	int type;
 	double op2;
 	char s[MAXOP];
-
+	
 	while((type = getop(s)) != EOF)
 	{
 		switch(type)
@@ -41,6 +37,10 @@ main()
 					push(pop() / op2);
 				else
 					printf("Error: zero divisor\n");
+				break;
+			case '%':
+				op2 = pop();
+				push((int)pop() % (int)op2);
 				break;
 			case '\n':
 				printf("\t%.8g\n", pop());
@@ -96,19 +96,35 @@ int getop(char s[])
 	while((s[0] = c = getch()) == ' ' || c == '\t')
 		;
 	s[1] = '\0';
-	if(!isdigit(c) && c != '.')
+	if(!isdigit(c) && c != '.' && c != '-')
 		return c;	/* Not a number */
 	i = 0;
+	if(c == '-')
+	{
+		if(!isdigit(c = getch()) && c != '.')
+			return '-';
+		else
+		{
+			s[0] = '-';
+			ungetch(c);	
+			if(isdigit(c))	
+				while(isdigit(s[++i] = c = getch()))
+					;
+			if(c == '.')
+				while(isdigit(s[++i] = c = getch()))
+					;
+		}
+	}
 	if(isdigit(c))	/* Collect interger part */
 		while(isdigit(s[++i] = c = getch()))
 			;
 	if(c == '.')	/* Collect function part */
-		while(isdigit(s[++i] = c  = getch()))
+		while(isdigit(s[++i] = c = getch()))
 			;
-		s[i] = '\0';
-		if(c != EOF)
-			ungetch(c);
-		return NUMBER;
+	s[i] = '\0';
+	if(c != EOF)
+		ungetch(c);
+	return NUMBER;
 }
 
 /*--------Getch & Ungetch--------*/
