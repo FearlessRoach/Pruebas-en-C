@@ -1,10 +1,8 @@
-/* Calculator app integrated with other commands.
- * Still debugging to do.
- */
+/* Completing calculator program with some other functions */
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 
-#define MAX 10
 #define MAXVAL 100
 #define NUMBER '0'
 
@@ -20,7 +18,7 @@ int main()
 	int com; /* Command introduced */
 	int i;
 	double op2, op3;
-	char s[MAX];
+	char s[MAXVAL];
 
 	while((com = getop(s)) != EOF)
 	{
@@ -59,16 +57,16 @@ int main()
 				else
 					printf("\t%.8g\n", pop());
 				break;
-			case 'p': /* Prints all elements of the stack */
+			case 'P': /* Prints all elements of the stack */
 				for(i = 0; i < sp; i++)
 					printf("\t%g", val[i]);
 				printf("\n");
 				break;
-			case 'd': /* Duplicates entire stack */
+			case 'D': /* Duplicates entire stack */
 				for(i = 0; i < sp; i++)
 					push(val[i]);
 				break;
-			case 's': /* Swaps last to elements of stack */
+			case 'S': /* Swaps last to elements of stack */
 				op2 = pop();
 				op3 = pop();
 				push(op2);
@@ -77,6 +75,25 @@ int main()
 			case 'r': /* Clears whole stack */
 				for(i = sp-1; i >= 0; i--)
 					pop();
+				break;
+			case 's';
+				sin(pop());
+				break;
+			case 'c';
+				cos(pop());
+				break;
+			case '^';
+				op2 = pop();
+				pow(pop(), op2);
+				break;
+			case '~';
+				sqrt(pop());
+				break;
+			case 'l';
+				log(pop());
+				break;
+			case 'E';
+				exp(pop());
 				break;
 			default:
 				printf("Error: unknown command %s\n", s);
@@ -99,7 +116,7 @@ double pop(void)
 		return val[--sp];
 	else 
 	{
-		printf("Error: stack empty\n");
+		printf("Stack empty\n");
 		return 0.0;
 	}
 }
