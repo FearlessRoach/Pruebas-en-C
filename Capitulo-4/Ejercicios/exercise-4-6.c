@@ -17,10 +17,12 @@ double pop(void);
 int main()
 {
 	int com; /* Command introduced */
-	int i;
+	int i, v = 0;
 	double op2, op3;
 	char s[MAXVAL];
-
+	
+	for(i = 0; i < VAR; i++)
+		var[i] = 0;
 	while((com = getop(s)) != EOF)
 	{
 		switch(com)
@@ -77,31 +79,35 @@ int main()
 				for(i = sp-1; i >= 0; i--)
 					pop();
 				break;
-			case 'S';
-				sin(pop());
+			case 'S':
+				push(sin(pop()));
 				break;
-			case 'C';
-				cos(pop());
+			case 'C':
+				push(cos(pop()));
 				break;
-			case '^';
+			case '^':
 				op2 = pop();
-				pow(pop(), op2);
+				push(pow(pop(), op2));
 				break;
-			case '~';
-				sqrt(pop());
+			case '~':
+				push(sqrt(pop()));
 				break;
-			case 'L';
-				log(pop());
+			case 'L':
+				push(log(pop()));
 				break;
-			case 'E';
-				exp(pop());
+			case 'E':
+				push(exp(pop()));
 				break;
 			case '=':
-				op3 = pop();
-				var[
+				var[v - 'a'] = pop();
+				pop();
+				break;
 			default:
 				if(com >= 'a' && com <= 'j')
-					push(var[type - 'a']);
+				{
+					push(var[com - 'a']);
+					v = com;
+				}
 				else
 					printf("Error: unknown command %s\n", s);
 				break;	
