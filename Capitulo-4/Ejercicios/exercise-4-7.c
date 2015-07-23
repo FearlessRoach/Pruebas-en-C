@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAXVAL 100
 #define NUMBER '0'
@@ -140,6 +141,7 @@ double pop(void)
 
 int getch(void);
 void ungetch(int);
+void ungets(char []);
 
 int getop(char s[])
 {
@@ -177,6 +179,16 @@ int getop(char s[])
 	if(c != EOF)
 		ungetch(c);
 	return NUMBER;
+}
+
+/*--------Ungets function--------*/
+
+void ungets(char s[])
+{
+	int i;
+
+	for(i = 0; i < strlen(s); i++)
+		ungetch(s[i]);
 }
 
 /*--------Getch & Ungetch--------*/

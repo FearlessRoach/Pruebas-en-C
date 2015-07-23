@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAXVAL 100
 #define NUMBER '0'
@@ -140,6 +141,7 @@ double pop(void)
 
 int getch(void);
 void ungetch(int);
+void ungets(char []);
 
 int getop(char s[])
 {
@@ -179,23 +181,22 @@ int getop(char s[])
 	return NUMBER;
 }
 
-/*--------Getch & Ungetch--------*/
+/*--------Getch & Ungetch (Modified)--------*/
 
-#define BUFSIZE 100
+//#define BUFSIZE 100
 
-char buf[BUFSIZE];
-int bufp = 0;
+char buf = '\0';
+//int bufp = 0;
 
 int getch(void)
 {
-	return (bufp > 0) ? buf[--bufp] : getchar();
+	return (buf != '\0') ? buf : getchar();
 }
 
 void ungetch(int c)
 {
-	if (bufp >= BUFSIZE)
-		printf("Ungetch: too many characters\n");
+	if (buf != '\0')
+		buf = '\0';
 	else
-		if(c != EOF)
-			buf[bufp++] = c;
+		buf = c;
 }
